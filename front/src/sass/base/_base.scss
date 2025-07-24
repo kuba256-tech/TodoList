@@ -1,0 +1,17 @@
+@forward './global';
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.app-container {
+  padding: 1rem;
+}
+
+body {
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 13px;
+  color: #000;
+}
