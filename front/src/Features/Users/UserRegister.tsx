@@ -5,6 +5,8 @@ import Button from '@mui/material/Button';
 import FileInput from '../../components/FileInput/FileInput';
 import PreviewIcon from '@mui/icons-material/Preview';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../../store/hooks';
+import { registerUserThunk } from './userThunks';
 
 const initialRegisterState = {
   username: '',
@@ -17,6 +19,7 @@ const UserRegister = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [registerForm, setRegisterForm] = useState<IRegisterUser>(initialRegisterState);
+  const dispatch = useAppDispatch();
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -26,9 +29,14 @@ const UserRegister = () => {
     }));
   };
 
-  const onSubmit = (e: ChangeEvent<HTMLFormElement>) => {
+  const onSubmit = async(e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(registerForm);
+    console.log(registerForm)
+    try{
+      await dispatch(registerUserThunk(registerForm)).unwrap();
+    }catch(error){
+      console.log(error)
+    }
   };
 
   const onChangeAvatar = (e: React.ChangeEvent<HTMLInputElement>) => {
