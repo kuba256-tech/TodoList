@@ -2,6 +2,8 @@ import { Button, TextField } from '@mui/material';
 import { useState, type ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { ILoginUser } from '../../typed';
+import { useAppDispatch } from '../../store/hooks';
+import { loginUserThunk } from './userThunks';
 
 const initialState = {
   username: '',
@@ -10,6 +12,8 @@ const initialState = {
 
 const UserLogin = () => {
   const [loginForm, setLoginForm] = useState<ILoginUser>(initialState);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -19,12 +23,16 @@ const UserLogin = () => {
     }));
   };
 
-  const onSubmit = (e: ChangeEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(loginForm);
+    try {
+      await dispatch(loginUserThunk(loginForm)).unwrap();
+      navigate('/');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  const navigate = useNavigate();
   return (
     <div className="user-register app-container">
       <div className="submit-form">

@@ -1,0 +1,18 @@
+.home-section {
+  margin-top: 20px;
+  .home-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    p {
+      font-size: 40px;
+      text-transform: capitalize;
+    }
+    img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+    }
+  }
+}

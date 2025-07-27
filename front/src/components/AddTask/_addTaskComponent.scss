@@ -1,0 +1,12 @@
+.addtask-form {
+  margin-top: 1rem;
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    .is-completed {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}

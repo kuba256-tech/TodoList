@@ -1,4 +1,7 @@
 @use './base/reset';
 @use './base/base';
 
+@use '../components/AddTask/addTaskComponent';
+
 @use '../Features/Users/userLoginSignin';
+@use '../Features/Home/HomeSection.scss';

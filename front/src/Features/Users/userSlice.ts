@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { IUser } from '../../typed';
-import { registerUserThunk } from './userThunks';
+import { loginUserThunk, registerUserThunk } from './userThunks';
 
 interface IUserInitialState {
   user: IUser | null;
@@ -20,16 +20,28 @@ const userSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-    .addCase(registerUserThunk.pending, (state) => {
-      state.registeringLoading = true;
-    })
-     .addCase(registerUserThunk.fulfilled, (state, {payload}) => {
-      state.registeringLoading = false;
-      state.user = payload.user
-    })
-     .addCase(registerUserThunk.rejected, (state) => {
-      state.registeringLoading = false;
-    })
+      .addCase(registerUserThunk.pending, (state) => {
+        state.registeringLoading = true;
+      })
+      .addCase(registerUserThunk.fulfilled, (state, { payload }) => {
+        state.registeringLoading = false;
+        state.user = payload.user;
+      })
+      .addCase(registerUserThunk.rejected, (state) => {
+        state.registeringLoading = false;
+      });
+
+    builder
+      .addCase(loginUserThunk.pending, (state) => {
+        state.logingLoading = true;
+      })
+      .addCase(loginUserThunk.fulfilled, (state, { payload }) => {
+        state.logingLoading = false;
+        state.user = payload.user;
+      })
+      .addCase(loginUserThunk.rejected, (state) => {
+        state.logingLoading = false;
+      });
   },
   selectors: {
     selectUser: (state) => state.user,

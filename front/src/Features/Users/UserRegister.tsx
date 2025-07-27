@@ -29,13 +29,14 @@ const UserRegister = () => {
     }));
   };
 
-  const onSubmit = async(e: ChangeEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(registerForm)
-    try{
+    console.log(registerForm);
+    try {
       await dispatch(registerUserThunk(registerForm)).unwrap();
-    }catch(error){
-      console.log(error)
+      navigate('/');
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -114,7 +115,7 @@ const UserRegister = () => {
       <div className="user-register-bottom">
         <p>
           Already have an account?{' '}
-          <Button variant="outlined" onClick={() => navigate('/login')}>
+          <Button variant="outlined" onClick={() => navigate('/')}>
             LOGIN HERE
           </Button>
         </p>
