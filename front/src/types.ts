@@ -18,8 +18,11 @@ export interface IRegisterUser {
 }
 
 export interface ITask {
+  _id: string;
   title: string;
   description: string;
   date: string;
   isCompleted: boolean;
 }
+
+export type ITaskMutation = Omit<ITask, '_id'>;

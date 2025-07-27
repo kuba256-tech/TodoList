@@ -1,15 +1,15 @@
 import { Divider } from '@mui/material';
 import { apiUrl } from '../../GlobalConstant';
-import type { IUser } from '../../typed';
-
+import type { IUser } from '../../types';
 import AddTaskComponent from '../../components/AddTask/AddTaskComponent';
+import Tasks from './Tasks';
+import noPic from '../../assets/images/noPicIcon.png';
 
 interface Props {
   user: IUser;
 }
 const HomeSection: React.FC<Props> = ({ user }) => {
-  let userImg;
-  console.log(user);
+  let userImg = noPic;
 
   if (user.avatar) {
     userImg = apiUrl + '/' + user.avatar;
@@ -21,8 +21,9 @@ const HomeSection: React.FC<Props> = ({ user }) => {
         <p>{user.username}</p>
         <img src={userImg} alt="img" />
       </div>
-      <Divider>Tasks</Divider>
+      <Divider className="divider">Tasks</Divider>
       <div className="home-content">
+        <Tasks />
         <AddTaskComponent />
       </div>
     </div>

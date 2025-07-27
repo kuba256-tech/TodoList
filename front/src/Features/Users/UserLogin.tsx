@@ -1,7 +1,7 @@
 import { Button, TextField } from '@mui/material';
 import { useState, type ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import type { ILoginUser } from '../../typed';
+import type { ILoginUser } from '../../types';
 import { useAppDispatch } from '../../store/hooks';
 import { loginUserThunk } from './userThunks';
 

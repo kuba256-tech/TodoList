@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import type { IUser } from '../../typed';
+import type { IUser } from '../../types';
 import { loginUserThunk, registerUserThunk } from './userThunks';
 
 interface IUserInitialState {

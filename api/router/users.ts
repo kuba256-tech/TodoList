@@ -14,7 +14,9 @@ usersRouter.post("/", uploadImage.single("avatar"), async (req, res, next) => {
       confirmPassword: req.body.confirmPassword,
       avatar: req.file ? "images" + req.file.filename : null,
     };
+    
     const user = new User(newUser);
+    user.generateToken()
     await user.save();
 
     res.status(200).send({
@@ -37,9 +39,7 @@ usersRouter.post("/session", async (req, res, next) => {
         error: "username  required and password required",
       });
     }
-
     const user = await User.findOne({ username: req.body.username });
-
     if (!user) {
       res.status(400).send({
         error: "No username Found",
@@ -52,14 +52,13 @@ usersRouter.post("/session", async (req, res, next) => {
       return;
     }
 
-    user.generateToken();
-    await user.save();
+    user.generateToken()
+    user.save();
 
     res.status(200).send({
-      message:"Log in success",
-      user
-    })
-
+      message: "Log in success",
+      user,
+    });
   } catch (error) {
     if (error instanceof Error.ValidationError) {
       res.status(400).send({ error });

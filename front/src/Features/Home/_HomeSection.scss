@@ -15,4 +15,37 @@
       border-radius: 50%;
     }
   }
+  .divider {
+    margin-bottom: 20px;
+  }
+  .home-content {
+    .tasks {
+      height: 40vh;
+      overflow: scroll;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      border: 1px solid rgb(215, 204, 204);
+      padding: 2px;
+      border-radius: 10px;
+      .task {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #dabebe;
+        padding: 5px 10px;
+        border-radius: 10px;
+        .task-info {
+          p {
+            text-transform: capitalize;
+          }
+          span {
+            font-family: var(--second-family);
+          }
+        }
+        .home-content {
+        }
+      }
+    }
+  }
 }

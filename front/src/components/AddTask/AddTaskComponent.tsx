@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import type { ITask } from '../../typed';
+import type { ITaskMutation } from '../../types';
 import { Button, Checkbox, FormControlLabel, TextField } from '@mui/material';
 import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import { useAppDispatch } from '../../store/hooks';
 import { postTaskThunk } from '../../Features/Home/tasksThunk';
-const initialState: ITask = {
+
+const initialState: ITaskMutation = {
   title: '',
   description: '',
   date: '',
@@ -18,11 +19,11 @@ const AddTaskComponent = () => {
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     await dispatch(postTaskThunk(taskMutation));
+    setTaskMutation(initialState);
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTaskMutation((prevState) => ({ ...prevState, isCompleted: event.target.checked }));
-    console.log(taskMutation);
   };
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -39,6 +40,7 @@ const AddTaskComponent = () => {
         <form onSubmit={onSubmit}>
           <div className="form">
             <TextField
+              required
               fullWidth
               onChange={onChange}
               id="title"
@@ -48,6 +50,7 @@ const AddTaskComponent = () => {
               value={taskMutation.title}
             />
             <TextField
+              required
               fullWidth
               onChange={onChange}
               id="description"

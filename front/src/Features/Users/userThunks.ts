@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import type { ILoginUser, IRegisterUser, IUser } from '../../typed';
+import type { ILoginUser, IRegisterUser, IUser } from '../../types';
 import { axiosApi } from '../../axiosApi';
 
 export interface IRegisterAndLoading {

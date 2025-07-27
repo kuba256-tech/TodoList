@@ -1,5 +1,5 @@
 import { useState, type ChangeEvent } from 'react';
-import type { IRegisterUser } from '../../typed';
+import type { IRegisterUser } from '../../types';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import FileInput from '../../components/FileInput/FileInput';
