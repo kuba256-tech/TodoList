@@ -1,11 +1,11 @@
-import path from "path";
+import path from 'path';
 
-const rootPath = __dirname
+const rootPath = __dirname;
 
 const config = {
-    rootPath,
-    db:"mongodb://localhost/todoList",
-    publicPath:path.join(rootPath, "public")
-}
+  rootPath,
+  db: 'mongodb://localhost/todoList',
+  publicPath: path.join(rootPath, 'public'),
+};
 
 export default config;

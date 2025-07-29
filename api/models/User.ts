@@ -1,15 +1,15 @@
-import mongoose, { HydratedDocument, Model } from "mongoose";
-import { Schema } from "mongoose";
-import bcrypt from "bcrypt";
-import { IUserFields } from "../types";
-import { ToObjectOptions } from "mongoose";
-import jwt from "jsonwebtoken";
+import mongoose, { HydratedDocument, Model } from 'mongoose';
+import { Schema } from 'mongoose';
+import bcrypt from 'bcrypt';
+import { IUserFields } from '../types';
+import { ToObjectOptions } from 'mongoose';
+import jwt from 'jsonwebtoken';
 
 const genSaltFactory = 10;
 
 interface IUserMethods {
   checkPassword(password: string): Promise<boolean>;
-  generateToken():void
+  generateToken(): void;
 }
 
 interface IUserVirtual {
@@ -17,28 +17,22 @@ interface IUserVirtual {
 }
 
 export const generateTokenJWT = (_id: mongoose.Types.ObjectId) => {
-  return jwt.sign({ _id }, JWT_SECRET, { expiresIn: "365d" });
+  return jwt.sign({ _id }, JWT_SECRET, { expiresIn: '365d' });
 };
 
-export const JWT_SECRET = process.env.JWT_SECRET || "default_fallback_secret";
+export const JWT_SECRET = process.env.JWT_SECRET || 'default_fallback_secret';
 
 type IUserModel = Model<IUserFields, {}, IUserMethods>;
 
-const userSchema = new mongoose.Schema<
-  IUserFields,
-  IUserModel,
-  IUserMethods,
-  {},
-  IUserVirtual
->(
+const userSchema = new mongoose.Schema<IUserFields, IUserModel, IUserMethods, {}, IUserVirtual>(
   {
     username: {
       type: String,
-      required: [true, "username is required"],
+      required: [true, 'username is required'],
     },
     password: {
       type: String,
-      required: [true, "Password is required"],
+      required: [true, 'Password is required'],
     },
     avatar: {
       type: String,
@@ -58,7 +52,7 @@ const userSchema = new mongoose.Schema<
         },
       },
     },
-  }
+  },
 );
 
 userSchema.methods.checkPassword = async function (password: string) {
@@ -69,24 +63,23 @@ userSchema.methods.generateToken = function () {
   this.token = generateTokenJWT(this._id);
 };
 
-
-userSchema.path("password").validate(async function (v: string) {
-  if (!this.isModified("password")) return;
-  if (v!== this.confirmPassword) {
-    this.invalidate("confirmPassword", "Password do not match");
-    this.invalidate("password", "Password do not match");
+userSchema.path('password').validate(async function (v: string) {
+  if (!this.isModified('password')) return;
+  if (v !== this.confirmPassword) {
+    this.invalidate('confirmPassword', 'Password do not match');
+    this.invalidate('password', 'Password do not match');
   }
 });
 
-userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) return next();
   const salt = await bcrypt.genSalt(genSaltFactory);
   const hash = await bcrypt.hash(this.password, salt);
   this.password = hash;
   next();
 });
 
-userSchema.set("toJSON", {
+userSchema.set('toJSON', {
   transform: (_doc: any, ret: any) => {
     delete ret.password;
     delete ret.__v;
@@ -94,5 +87,5 @@ userSchema.set("toJSON", {
   },
 });
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model('User', userSchema);
 export default User;

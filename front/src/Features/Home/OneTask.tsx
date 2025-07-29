@@ -5,7 +5,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import AssignmentTurnedInRoundedIcon from '@mui/icons-material/AssignmentTurnedInRounded';
 import AssignmentTurnedInOutlinedIcon from '@mui/icons-material/AssignmentTurnedInOutlined';
 import { useAppDispatch } from '../../store/hooks';
-import { deleteTaskThunk, fetchAllTasksThunk } from './tasksThunk';
+import { deleteTaskThunk, fetchAllTasksThunk, mutateIsComplete } from './tasksThunk';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
   task: ITask;
@@ -13,9 +14,15 @@ interface Props {
 
 const OneTask: React.FC<Props> = ({ task }) => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const deleteTask = async (taskId: string) => {
     await dispatch(deleteTaskThunk(taskId));
+    await dispatch(fetchAllTasksThunk());
+  };
+
+  const completeTask = async (task: ITask) => {
+    await dispatch(mutateIsComplete(task));
     await dispatch(fetchAllTasksThunk());
   };
   return (
@@ -25,9 +32,12 @@ const OneTask: React.FC<Props> = ({ task }) => {
         <span>{task.description} </span>
       </div>
       <div className="task-functions">
-        <Button startIcon={<EditIcon color="secondary" />} />
+        <Button onClick={() => navigate(`mutateTask/${task._id}`)} startIcon={<EditIcon color="secondary" />} />
         <Button onClick={() => deleteTask(task._id)} startIcon={<DeleteIcon color="error" />} />
-        <Button startIcon={task.isCompleted ? <AssignmentTurnedInRoundedIcon /> : <AssignmentTurnedInOutlinedIcon />} />
+        <Button
+          onClick={() => completeTask(task)}
+          startIcon={task.isCompleted ? <AssignmentTurnedInRoundedIcon /> : <AssignmentTurnedInOutlinedIcon />}
+        />
       </div>
     </div>
   );

@@ -1,10 +1,15 @@
 import { useState } from 'react';
-import type { ITaskMutation } from '../../types';
+import type { ITask, ITaskMutation } from '../../types';
 import { Button, Checkbox, FormControlLabel, TextField } from '@mui/material';
 import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import { useAppDispatch } from '../../store/hooks';
-import { postTaskThunk } from '../../Features/Home/tasksThunk';
+import { fetchAllTasksThunk, mutateTaskThunk, postTaskThunk } from '../../Features/Home/tasksThunk';
+import { useNavigate } from 'react-router-dom';
+
+interface Props {
+  task: ITask | null;
+}
 
 const initialState: ITaskMutation = {
   title: '',
@@ -12,13 +17,22 @@ const initialState: ITaskMutation = {
   date: '',
   isCompleted: false,
 };
-const AddTaskComponent = () => {
-  const [taskMutation, setTaskMutation] = useState(initialState);
+const AddTaskComponent: React.FC<Props> = ({ task = null }) => {
+  const [taskMutation, setTaskMutation] = useState(task ? task : initialState);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    await dispatch(postTaskThunk(taskMutation));
+
+    if (task) {
+      await dispatch(mutateTaskThunk({ ...taskMutation, _id: task._id }));
+      await dispatch(fetchAllTasksThunk());
+      navigate('/');
+    } else {
+      await dispatch(postTaskThunk(taskMutation));
+    }
+
     setTaskMutation(initialState);
   };
 
@@ -74,7 +88,7 @@ const AddTaskComponent = () => {
                 label="Completed"
               />
               <Button type="submit" variant="contained" color="success">
-                Add task
+                {task ? 'Edit Task' : 'Add task'}
               </Button>
             </div>
           </div>

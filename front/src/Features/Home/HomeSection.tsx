@@ -24,7 +24,7 @@ const HomeSection: React.FC<Props> = ({ user }) => {
       <Divider className="divider">Tasks</Divider>
       <div className="home-content">
         <Tasks />
-        <AddTaskComponent />
+        <AddTaskComponent task={null} />
       </div>
     </div>
   );

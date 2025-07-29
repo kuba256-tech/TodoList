@@ -3,7 +3,7 @@ import { selectAllTasks } from './tasksSlice';
 import { useCallback, useEffect } from 'react';
 import { useAppDispatch } from '../../store/hooks';
 import { fetchAllTasksThunk } from './tasksThunk';
-import OneTask from './oneTask';
+import OneTask from './OneTask';
 
 const Tasks = () => {
   const tasks = useSelector(selectAllTasks);
