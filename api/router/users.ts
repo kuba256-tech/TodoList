@@ -3,6 +3,7 @@ import { uploadImage } from '../middleware/multer';
 import User from '../models/User';
 import { Error } from 'mongoose';
 import { error } from 'console';
+import auth, { RequestWithUser } from '../middleware/auth';
 
 const usersRouter = express.Router();
 
@@ -22,6 +23,30 @@ usersRouter.post('/', uploadImage.single('avatar'), async (req, res, next) => {
     res.status(200).send({
       message: 'new User is registered',
       user,
+    });
+  } catch (error) {
+    if (error instanceof Error.ValidationError) {
+      res.status(400).send(error);
+      return;
+    }
+    next(error);
+  }
+});
+usersRouter.delete('/logout', auth, async (req, res, next) => {
+  try {
+    const token = (req as RequestWithUser).user.token;
+    if (token) {
+      res.send({ message: 'Success logOut' });
+      return;
+    }
+
+    const user = await User.findOne({ token });
+    if (user) {
+      user.generateToken();
+      await user.save();
+    }
+    res.status(200).send({
+      message: 'Success logOut',
     });
   } catch (error) {
     if (error instanceof Error.ValidationError) {

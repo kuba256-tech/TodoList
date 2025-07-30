@@ -26,3 +26,19 @@ export interface ITask {
 }
 
 export type ITaskMutation = Omit<ITask, '_id'>;
+
+export interface IValidationError {
+  errors: {
+    [key: string]: {
+      name: string;
+      message: string;
+    };
+  };
+  message: string;
+  name: string;
+  _message: string;
+}
+
+export interface IGlobalError {
+  error: string;
+}

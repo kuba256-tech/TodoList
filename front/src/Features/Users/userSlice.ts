@@ -1,23 +1,31 @@
 import { createSlice } from '@reduxjs/toolkit';
-import type { IUser } from '../../types';
+import type { IGlobalError, IUser, IValidationError } from '../../types';
 import { loginUserThunk, registerUserThunk } from './userThunks';
 
 interface IUserInitialState {
   user: IUser | null;
   registeringLoading: boolean;
+  registerError: null | IValidationError;
   logingLoading: boolean;
+  loginError: null | IGlobalError;
 }
 
 const initialState: IUserInitialState = {
   user: null,
   registeringLoading: false,
+  registerError: null,
   logingLoading: false,
+  loginError: null,
 };
 
 const userSlice = createSlice({
   name: 'users',
   initialState,
-  reducers: {},
+  reducers: {
+    unSetUser: (state) => {
+      state.user = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(registerUserThunk.pending, (state) => {
@@ -27,8 +35,9 @@ const userSlice = createSlice({
         state.registeringLoading = false;
         state.user = payload.user;
       })
-      .addCase(registerUserThunk.rejected, (state) => {
+      .addCase(registerUserThunk.rejected, (state, { payload: error }) => {
         state.registeringLoading = false;
+        state.registerError = error || null;
       });
 
     builder
@@ -39,16 +48,21 @@ const userSlice = createSlice({
         state.logingLoading = false;
         state.user = payload.user;
       })
-      .addCase(loginUserThunk.rejected, (state) => {
+      .addCase(loginUserThunk.rejected, (state, { payload: error }) => {
         state.logingLoading = false;
+        state.loginError = error || null;
       });
   },
   selectors: {
     selectUser: (state) => state.user,
     selectRegisteringLoading: (state) => state.registeringLoading,
+    selectRegisterError: (state) => state.registerError,
     selectLoginLoading: (state) => state.logingLoading,
+    selectLoginError: (state) => state.loginError,
   },
 });
 
 export const userReducer = userSlice.reducer;
-export const { selectUser, selectLoginLoading, selectRegisteringLoading } = userSlice.selectors;
+export const { unSetUser } = userSlice.actions;
+export const { selectUser, selectLoginLoading, selectRegisteringLoading, selectLoginError, selectRegisterError } =
+  userSlice.selectors;

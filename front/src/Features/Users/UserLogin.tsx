@@ -1,9 +1,10 @@
-import { Button, TextField } from '@mui/material';
+import { Alert, Button, TextField } from '@mui/material';
 import { useState, type ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { ILoginUser } from '../../types';
-import { useAppDispatch } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { loginUserThunk } from './userThunks';
+import { selectLoginError } from './userSlice';
 
 const initialState = {
   username: '',
@@ -14,6 +15,7 @@ const UserLogin = () => {
   const [loginForm, setLoginForm] = useState<ILoginUser>(initialState);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const loginError = useAppSelector(selectLoginError);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -40,6 +42,7 @@ const UserLogin = () => {
         <p className="form-title">Log in to your account</p>
         <form onSubmit={onSubmit}>
           <div className="form">
+            {loginError && <Alert severity="error">{loginError.error}</Alert>}
             <TextField
               fullWidth
               onChange={onChange}

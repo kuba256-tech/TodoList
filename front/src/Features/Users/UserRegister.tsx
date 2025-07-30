@@ -5,8 +5,9 @@ import Button from '@mui/material/Button';
 import FileInput from '../../components/FileInput/FileInput';
 import PreviewIcon from '@mui/icons-material/Preview';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { registerUserThunk } from './userThunks';
+import { selectRegisterError } from './userSlice';
 
 const initialRegisterState = {
   username: '',
@@ -20,6 +21,7 @@ const UserRegister = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [registerForm, setRegisterForm] = useState<IRegisterUser>(initialRegisterState);
   const dispatch = useAppDispatch();
+  const registerError = useAppSelector(selectRegisterError);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -27,6 +29,14 @@ const UserRegister = () => {
       ...prevState,
       [name]: value,
     }));
+  };
+
+  const getFieldError = (fieldName: string) => {
+    try {
+      return registerError?.errors[fieldName].message;
+    } catch (error) {
+      return undefined;
+    }
   };
 
   const onSubmit = async (e: ChangeEvent<HTMLFormElement>) => {
@@ -74,6 +84,8 @@ const UserRegister = () => {
               label="Username"
               variant="outlined"
               type="text"
+              helperText={getFieldError('username')}
+              error={getFieldError('username') ? true : false}
             />
             <TextField
               fullWidth
@@ -84,6 +96,8 @@ const UserRegister = () => {
               label="Password"
               variant="outlined"
               type="password"
+              helperText={getFieldError('password')}
+              error={getFieldError('password') ? true : false}
             />
             <TextField
               type="password"
@@ -94,6 +108,8 @@ const UserRegister = () => {
               value={registerForm.confirmPassword}
               label="Confirm password"
               variant="outlined"
+              helperText={getFieldError('confirmPassword')}
+              error={getFieldError('confirmPassword') ? true : false}
             />
 
             <div className="file-div">

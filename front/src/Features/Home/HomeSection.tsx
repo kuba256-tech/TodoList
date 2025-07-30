@@ -1,14 +1,35 @@
-import { Divider } from '@mui/material';
+import { Button, Divider, Menu, MenuItem } from '@mui/material';
 import { apiUrl } from '../../GlobalConstant';
 import type { IUser } from '../../types';
 import AddTaskComponent from '../../components/AddTask/AddTaskComponent';
 import Tasks from './Tasks';
 import noPic from '../../assets/images/noPicIcon.png';
+import React from 'react';
+import { useAppDispatch } from '../../store/hooks';
+import { logOutThunk } from '../Users/userThunks';
+import { unSetUser } from '../Users/userSlice';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
   user: IUser;
 }
 const HomeSection: React.FC<Props> = ({ user }) => {
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = async () => {
+    setAnchorEl(null);
+    await dispatch(logOutThunk()).unwrap();
+    await dispatch(unSetUser());
+    navigate('/login');
+  };
+
   let userImg = noPic;
 
   if (user.avatar) {
@@ -19,7 +40,30 @@ const HomeSection: React.FC<Props> = ({ user }) => {
     <div className="home-section app-container">
       <div className="home-top">
         <p>{user.username}</p>
-        <img src={userImg} alt="img" />
+        <div>
+          <Button
+            id="basic-button"
+            aria-controls={open ? 'basic-menu' : undefined}
+            aria-haspopup="true"
+            aria-expanded={open ? 'true' : undefined}
+            onClick={handleClick}
+          >
+            <img src={userImg} alt="img" />
+          </Button>
+          <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            slotProps={{
+              list: {
+                'aria-labelledby': 'basic-button',
+              },
+            }}
+          >
+            <MenuItem onClick={handleClose}>Logout</MenuItem>
+          </Menu>
+        </div>
       </div>
       <Divider className="divider">Tasks</Divider>
       <div className="home-content">
