@@ -4,6 +4,7 @@ import auth, { RequestWithUser } from '../middleware/auth';
 import Task from '../models/Task';
 const tasksRouter = express.Router();
 
+
 tasksRouter.get('/', auth, async (req, res, next) => {
   try {
     const user = (req as RequestWithUser).user;
