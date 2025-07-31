@@ -8,10 +8,10 @@ import React from 'react';
 import { useAppDispatch } from '../../store/hooks';
 import { logOutThunk } from '../Users/userThunks';
 import { unSetUser } from '../Users/userSlice';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 interface Props {
-  user: IUser;
+  user: IUser | null;
 }
 const HomeSection: React.FC<Props> = ({ user }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -35,10 +35,14 @@ const HomeSection: React.FC<Props> = ({ user }) => {
   };
 
   let userImg = noPic;
+  if(!user){
+    return <NavLink to={"/login"} replace/>
+  }
 
   if (user.avatar) {
     userImg = apiUrl + '/' + user.avatar;
   }
+  console.log(userImg)
 
   return (
     <div className="home-section app-container">

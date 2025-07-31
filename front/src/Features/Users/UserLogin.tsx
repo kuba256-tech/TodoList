@@ -1,4 +1,4 @@
-import { Alert, Button, LinearProgress, TextField } from '@mui/material';
+import { Alert, Button, TextField } from '@mui/material';
 import { useEffect, useState, type ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { ILoginUser } from '../../types';

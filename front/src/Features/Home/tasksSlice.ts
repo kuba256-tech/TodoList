@@ -48,7 +48,7 @@ const tasksSlice = createSlice({
       .addCase(deleteTaskThunk.pending, (state) => {
         state.deletingTask = true;
       })
-      .addCase(deleteTaskThunk.fulfilled, (state, { payload }) => {
+      .addCase(deleteTaskThunk.fulfilled, (state) => {
         state.deletingTask = false;
       })
       .addCase(deleteTaskThunk.rejected, (state) => {

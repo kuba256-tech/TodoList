@@ -16,7 +16,7 @@ function App() {
           <Routes>
             <Route
               path="/"
-              element={<ProtectedRoute isAllowed={user !== null}>{user && <HomeSection user={user} />}</ProtectedRoute>}
+              element={<ProtectedRoute isAllowed={user !== null}><HomeSection user={user} /></ProtectedRoute>}
             />
             <Route path="/mutateTask/:id" element={<MutateTask />} />
             <Route path="/login" element={<UserLogin />} />

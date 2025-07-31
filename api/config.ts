@@ -1,12 +1,12 @@
 import path from 'path';
 import dotenv from 'dotenv';
+dotenv.config();
 
 const rootPath = __dirname;
-dotenv.config();
 
 const config = {
   rootPath,
-  db: process.env.MONGO_URI!,
+  db: process.env.MONGO_URI as string,
   publicPath: path.join(rootPath, 'public'),
 };
 
