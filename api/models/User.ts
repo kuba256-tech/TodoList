@@ -5,8 +5,6 @@ import { IUserFields } from '../types';
 import { ToObjectOptions } from 'mongoose';
 import jwt from 'jsonwebtoken';
 
-const genSaltFactory = 10;
-
 interface IUserMethods {
   checkPassword(password: string): Promise<boolean>;
   generateToken(): void;
@@ -81,6 +79,7 @@ userSchema.path('password').validate(async function (v: string) {
   }
 });
 
+const genSaltFactory = 10;
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
   const salt = await bcrypt.genSalt(genSaltFactory);

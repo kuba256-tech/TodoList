@@ -1,10 +1,10 @@
-import { Alert, Button, TextField } from '@mui/material';
-import { useState, type ChangeEvent } from 'react';
+import { Alert, Button, LinearProgress, TextField } from '@mui/material';
+import { useEffect, useState, type ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { ILoginUser } from '../../types';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { loginUserThunk } from './userThunks';
-import { selectLoginError } from './userSlice';
+import { selectLoginError, selectLoginLoading, unSetLoginError } from './userSlice';
 
 const initialState = {
   username: '',
@@ -16,6 +16,7 @@ const UserLogin = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const loginError = useAppSelector(selectLoginError);
+  const loginLoading = useAppSelector(selectLoginLoading);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -34,6 +35,10 @@ const UserLogin = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    dispatch(unSetLoginError());
+  }, []);
 
   return (
     <div className="user-register app-container">
@@ -64,7 +69,7 @@ const UserLogin = () => {
               type="password"
             />
 
-            <Button type="submit" variant="contained">
+            <Button loading={loginLoading} disabled={loginLoading} type="submit" variant="contained">
               Log in
             </Button>
           </div>
@@ -73,7 +78,7 @@ const UserLogin = () => {
       <div className="user-register-bottom">
         <p>
           Do not have an account?{' '}
-          <Button variant="outlined" onClick={() => navigate('/register')}>
+          <Button disabled={loginLoading} variant="outlined" onClick={() => navigate('/register')}>
             REGISTER HERE
           </Button>
         </p>

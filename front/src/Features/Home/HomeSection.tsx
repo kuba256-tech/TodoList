@@ -25,9 +25,13 @@ const HomeSection: React.FC<Props> = ({ user }) => {
 
   const handleClose = async () => {
     setAnchorEl(null);
+  };
+
+  const handleLogOut = async () => {
     await dispatch(logOutThunk()).unwrap();
     await dispatch(unSetUser());
     navigate('/login');
+    handleClose();
   };
 
   let userImg = noPic;
@@ -61,7 +65,7 @@ const HomeSection: React.FC<Props> = ({ user }) => {
               },
             }}
           >
-            <MenuItem onClick={handleClose}>Logout</MenuItem>
+            <MenuItem onClick={handleLogOut}>Logout</MenuItem>
           </Menu>
         </div>
       </div>

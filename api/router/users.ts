@@ -44,6 +44,7 @@ usersRouter.delete('/logout', auth, async (req, res, next) => {
     if (user) {
       user.generateToken();
       await user.save();
+      return;
     }
     res.status(200).send({
       message: 'Success logOut',
@@ -63,6 +64,7 @@ usersRouter.post('/session', async (req, res, next) => {
       res.status(400).send({
         error: 'username  required and password required',
       });
+      return;
     }
     const user = await User.findOne({ username: req.body.username });
     if (!user) {

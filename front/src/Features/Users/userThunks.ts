@@ -1,9 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import type { IGlobalError, ILoginUser, IRegisterUser, IUser, IValidationError } from '../../types';
 import { axiosApi } from '../../axiosApi';
-import { AxiosError, isAxiosError } from 'axios';
+import { isAxiosError } from 'axios';
 import type { RootState } from '../../store/store';
-import { unSetUser } from './userSlice';
 
 export interface IRegisterAndLoading {
   user: IUser;

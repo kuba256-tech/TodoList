@@ -25,6 +25,12 @@ const userSlice = createSlice({
     unSetUser: (state) => {
       state.user = null;
     },
+    unSetRegisterError: (state) => {
+      state.registerError = null;
+    },
+    unSetLoginError: (state) => {
+      state.loginError = null;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -63,6 +69,6 @@ const userSlice = createSlice({
 });
 
 export const userReducer = userSlice.reducer;
-export const { unSetUser } = userSlice.actions;
+export const { unSetUser, unSetLoginError, unSetRegisterError } = userSlice.actions;
 export const { selectUser, selectLoginLoading, selectRegisteringLoading, selectLoginError, selectRegisterError } =
   userSlice.selectors;

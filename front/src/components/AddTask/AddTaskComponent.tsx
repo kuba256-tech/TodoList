@@ -3,9 +3,10 @@ import type { ITask, ITaskMutation } from '../../types';
 import { Button, Checkbox, FormControlLabel, TextField } from '@mui/material';
 import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
-import { useAppDispatch } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { fetchAllTasksThunk, mutateTaskThunk, postTaskThunk } from '../../Features/Home/tasksThunk';
 import { useNavigate } from 'react-router-dom';
+import { selectPostingTasks } from '../../Features/Home/tasksSlice';
 
 interface Props {
   task: ITask | null;
@@ -21,6 +22,8 @@ const AddTaskComponent: React.FC<Props> = ({ task = null }) => {
   const [taskMutation, setTaskMutation] = useState(task ? task : initialState);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  const postingTask = useAppSelector(selectPostingTasks);
 
   const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -87,7 +90,7 @@ const AddTaskComponent: React.FC<Props> = ({ task = null }) => {
                 }
                 label="Completed"
               />
-              <Button type="submit" variant="contained" color="success">
+              <Button loading={postingTask} disabled={postingTask} type="submit" variant="contained" color="success">
                 {task ? 'Edit Task' : 'Add task'}
               </Button>
             </div>

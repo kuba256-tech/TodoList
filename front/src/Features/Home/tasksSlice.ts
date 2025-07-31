@@ -58,8 +58,9 @@ const tasksSlice = createSlice({
   selectors: {
     selectAllTasks: (state) => state.tasks,
     selectTasksLoading: (state) => state.loadingTasks,
+    selectPostingTasks: (state) => state.postingTask,
   },
 });
 
 export const tasksReducer = tasksSlice.reducer;
-export const { selectAllTasks, selectTasksLoading } = tasksSlice.selectors;
+export const { selectAllTasks, selectTasksLoading, selectPostingTasks } = tasksSlice.selectors;

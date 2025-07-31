@@ -2,8 +2,6 @@ import express from 'express';
 import { Error } from 'mongoose';
 import auth, { RequestWithUser } from '../middleware/auth';
 import Task from '../models/Task';
-import { describe } from 'node:test';
-import { error } from 'console';
 const tasksRouter = express.Router();
 
 tasksRouter.get('/', auth, async (req, res, next) => {

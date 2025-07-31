@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent } from 'react';
+import { useEffect, useState, type ChangeEvent } from 'react';
 import type { IRegisterUser } from '../../types';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -7,7 +7,7 @@ import PreviewIcon from '@mui/icons-material/Preview';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { registerUserThunk } from './userThunks';
-import { selectRegisterError } from './userSlice';
+import { selectRegisterError, selectRegisteringLoading, unSetRegisterError } from './userSlice';
 
 const initialRegisterState = {
   username: '',
@@ -22,6 +22,7 @@ const UserRegister = () => {
   const [registerForm, setRegisterForm] = useState<IRegisterUser>(initialRegisterState);
   const dispatch = useAppDispatch();
   const registerError = useAppSelector(selectRegisterError);
+  const registerLoading = useAppSelector(selectRegisteringLoading);
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -59,6 +60,10 @@ const UserRegister = () => {
       }));
     }
   };
+
+  useEffect(() => {
+    dispatch(unSetRegisterError());
+  }, []);
 
   return (
     <div className="user-register app-container">
@@ -122,7 +127,7 @@ const UserRegister = () => {
               )}
             </div>
 
-            <Button type="submit" variant="contained">
+            <Button loading={registerLoading} disabled={registerLoading} type="submit" variant="contained">
               Register
             </Button>
           </div>
@@ -131,7 +136,7 @@ const UserRegister = () => {
       <div className="user-register-bottom">
         <p>
           Already have an account?{' '}
-          <Button variant="outlined" onClick={() => navigate('/')}>
+          <Button disabled={registerLoading} variant="outlined" onClick={() => navigate('/')}>
             LOGIN HERE
           </Button>
         </p>
